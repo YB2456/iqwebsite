@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oops! You've Been Hacked!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      font-family: 'Courier New', Courier, monospace;
+      color: #00ff00;
+      overflow-x: hidden;
+    }
+
+    .container {
+      margin: 50px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.85);
+      border-radius: 10px;
+      max-width: 800px;
+    }
+
+    .glitch {
+      font-size: 2rem;
+      animation: glitch 1s infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px red; }
+      25% { text-shadow: -2px -2px blue; }
+      50% { text-shadow: 2px -2px lime; }
+      75% { text-shadow: -2px 2px yellow; }
+      100% { text-shadow: none; }
+    }
+
+    #terminal {
+      white-space: pre-line;
+      line-height: 1.5;
+      font-size: 1.1rem;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1em;
+      background-color: #00ff00;
+      animation: blink 1s step-end infinite;
+      vertical-align: bottom;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .signature {
+      margin-top: 30px;
+      font-weight: bold;
+      color: #00ffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="glitch">⚠ Oops! You've Been Hacked! ⚠</div>
+    <div id="terminal"></div><div class="cursor"></div>
+    <div id="signature" class="signature" style="display: none;">– Hack executed by Yumeth ⚡</div>
+  </div>
+
+  <script>
+    const lines = [
+      "Don't worry, your data wasn't taken...",
+      "You were just hacked by Yumeth 😈",
+      "This is a harmless lesson to show how easily hackers trick people.",
+      "Never click on suspicious links, even if they’re from friends.",
+      "This could’ve been much worse... consider this a warning.",
+      "To help you remember... here’s your punishment 🎶",
+      "Redirecting in 5 seconds..."
+    ];
+
+    const terminal = document.getElementById("terminal");
+    const signature = document.getElementById("signature");
+    let lineIndex = 0;
+    let charIndex = 0;
+
+    function typeLine() {
+      if (lineIndex < lines.length) {
+        const line = lines[lineIndex];
+        if (charIndex < line.length) {
+          terminal.innerHTML += line[charIndex];
+          charIndex++;
+          window.scrollTo(0, document.body.scrollHeight);
+          setTimeout(typeLine, 50);
+        } else {
+          terminal.innerHTML += "\n";
+          charIndex = 0;
+          lineIndex++;
+          setTimeout(typeLine, 500);
+        }
+      } else {
+        signature.style.display = "block";
+        window.scrollTo(0, document.body.scrollHeight);
+        setTimeout(() => {
+          window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        }, 5000);
+      }
+    }
+
+    window.onload = typeLine;
+  </script>
+</body>
+</html>
