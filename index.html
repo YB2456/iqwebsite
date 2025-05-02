@@ -1,115 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>YouTube Shorts</title>
+  <meta charset="UTF-8">
+  <title>Only 200+ IQ People Can Survive 😳🧠</title>
   <style>
     body {
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       margin: 0;
-      padding: 0;
-      background-color: black;
-      font-family: 'Courier New', Courier, monospace;
-      color: #00ff00;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     .container {
-      margin: 50px;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.85);
-      border-radius: 10px;
-      max-width: 800px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+      animation: float 3s ease-in-out infinite;
     }
 
-    .glitch {
-      font-size: 2rem;
-      animation: glitch 1s infinite;
+    h1 {
+      font-size: 22px;
       margin-bottom: 20px;
+      color: #333;
     }
 
-    @keyframes glitch {
-      0% { text-shadow: 2px 2px red; }
-      25% { text-shadow: -2px -2px blue; }
-      50% { text-shadow: 2px -2px lime; }
-      75% { text-shadow: -2px 2px yellow; }
-      100% { text-shadow: none; }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+      font-size: 16px;
     }
 
-    #terminal {
-      white-space: pre-line;
-      line-height: 1.5;
-      font-size: 1.1rem;
+    button {
+      background: #ff7b54;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
     }
 
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      height: 1em;
-      background-color: #00ff00;
-      animation: blink 1s step-end infinite;
-      vertical-align: bottom;
-      margin-left: 2px;
+    button:hover {
+      background: #ff4e00;
     }
 
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    .signature {
-      margin-top: 30px;
-      font-weight: bold;
-      color: #00ffff;
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <div class="glitch">⚠ Oops! You've Been Hacked! ⚠</div>
-    <div id="terminal"></div><div class="cursor"></div>
-    <div id="signature" class="signature" style="display: none;">– Hack executed by Yumeth ⚡</div>
+    <h1>Only 200+ IQ People Can Survive 😳🧠</h1>
+    <form onsubmit="handleSubmit(event)">
+      <input type="text" id="name" placeholder="Enter your name" required><br>
+      <input type="password" placeholder="Create a password" required><br>
+      <button type="submit">Start Test</button>
+    </form>
   </div>
 
   <script>
-    const lines = [
-      "Don't worry, your data wasn't taken...",
-      "You were just hacked by Yumeth 😈",
-      "This is a harmless lesson to show how easily hackers trick people.",
-      "Never click on suspicious links, even if they’re from friends.",
-      "This could’ve been much worse... consider this a warning.",
-      "To help you remember... here’s your punishment 🎶",
-      "Redirecting in 3 seconds..."
-    ];
-
-    const terminal = document.getElementById("terminal");
-    const signature = document.getElementById("signature");
-    let lineIndex = 0;
-    let charIndex = 0;
-
-    function typeLine() {
-      if (lineIndex < lines.length) {
-        const line = lines[lineIndex];
-        if (charIndex < line.length) {
-          terminal.innerHTML += line[charIndex];
-          charIndex++;
-          window.scrollTo(0, document.body.scrollHeight);
-          setTimeout(typeLine, 50);
-        } else {
-          terminal.innerHTML += "\n";
-          charIndex = 0;
-          lineIndex++;
-          setTimeout(typeLine, 500);
-        }
-      } else {
-        signature.style.display = "block";
-        window.scrollTo(0, document.body.scrollHeight);
-        setTimeout(() => {
-          window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-        }, 3000);
-      }
+    function handleSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      sessionStorage.setItem('prankName', name); // pass to next page
+      window.location.href = "loading.html"; // will build next
     }
-
-    window.onload = typeLine;
   </script>
+
 </body>
 </html>

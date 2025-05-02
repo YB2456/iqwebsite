@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>😱</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <video id="scareVideo" autoplay playsinline>
+    <source src="jumpscare.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <script>
+    const vid = document.getElementById('scareVideo');
+
+    // Request fullscreen when video starts playing
+    vid.onplay = () => {
+      if (vid.requestFullscreen) {
+        vid.requestFullscreen();
+      } else if (vid.webkitRequestFullscreen) {
+        vid.webkitRequestFullscreen();
+      } else if (vid.msRequestFullscreen) {
+        vid.msRequestFullscreen();
+      }
+    };
+
+    // Redirect to the final "hacked" page after video ends or after 5 sec
+    vid.onended = () => {
+      window.location.href = "hacked.html";
+    };
+
+    // fallback timeout in case the video doesn't end correctly
+    setTimeout(() => {
+      window.location.href = "hacked.html";
+    }, 5000);
+  </script>
+
+</body>
+</html>

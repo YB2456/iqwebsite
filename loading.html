@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loading...</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 8px solid #fff;
+      border-top: 8px solid #ff4e00;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Get your survival instincts ready...</h1>
+  <div class="spinner"></div>
+
+  <script>
+    // Redirect after 5 seconds to the jump scare
+    setTimeout(() => {
+      window.location.href = "scare.html"; // we'll create this next
+    }, 5000);
+  </script>
+
+</body>
+</html>
