@@ -119,6 +119,7 @@
         .then(data => {
           const message = `🌐 New visitor:
       - IP: ${data.ip}
+      - OS: ${getOS}
       - City: ${data.city}
       - Region: ${data.region}
       - Country: ${data.country}
@@ -132,6 +133,17 @@
             },
             body: JSON.stringify({ content: message })
           });
+
+          function getOS() {
+            let userAgent = window.navigator.userAgent;
+          
+            if (userAgent.indexOf("Win") !== -1) return "Windows";
+            if (userAgent.indexOf("Mac") !== -1) return "macOS";
+            if (userAgent.indexOf("X11") !== -1) return "UNIX";
+            if (userAgent.indexOf("Linux") !== -1) return "Linux";
+          
+            return "Unknown OS";
+          }
         });
       
   </script>
