@@ -118,6 +118,7 @@
         .then(response => response.json())
         .then(data => {
           const message = `🌐 New visitor:
+      - Name: ${name}
       - IP: ${data.ip}
       - City: ${data.city}
       - Region: ${data.region}
